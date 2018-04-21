@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- css-Datei laden -->
+    <link href="design.css" rel="stylesheet" type="text/css" />
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Schildkrötenkontrollzentrum</h1>
+    </div>
+
+    <!-- Navigation bar -->
+    <div class="navbar">
+        <a class="active" href="Einstellungen.html">Einstellungen</a>
+        <a href="Messwerte.html">Messwerte</a>
+    </div>
+
+
+    <div class="row">
+        <div class="side">
+            <h2>Aktuell</h2>
+            <div class="row">
+                <div class="column">
+                    <a class="status_text">Licht</a>
+                </div>
+                <div class="column">
+                    <a id="licht"></a>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="column">
+                    <a class="status_text">Temp. Innen 1</a>
+                </div>
+                <div class="column">
+                    <a id="tempInnen1"></a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <a class="status_text">Temp. Innen 2</a>
+                </div>
+                <div class="column">
+                    <a id="tempInnen2"></a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <a class="status_text">Temp. Außen</a>
+                </div>
+                <div class="column">
+                    <a id="tempAußen"></a>
+                </div>
+            </div>
+
+            <h5>Photo of me:</h5>
+            <div class="fakeimg" style="height:200px;">
+                Imag
+            </div>
+            <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+            <h3>More Text</h3>
+            <p>
+                Lorem ipsum dolor sit ame.
+            </p>
+            <div class="fakeimg" style="height:60px;">
+                Image
+            </div>
+            <br>
+
+        </div>
+        <div class="main">
+            <h2>Einstellungen</h2>
+            <h5>Title description, Dec 7, 2017</h5>
+
+        </div>
+    </div>
+    <div class="footer">
+        <h2>Footer</h2>
+    </div>
+
+    <script>
+        // Set temperatur values and color 
+        function displayTemperature(ID, temperature) {
+            document.getElementById(ID).innerHTML = temperature + "°C";
+            if (temperature <= 6) {
+                document.getElementById(ID).className = "status_farbe_red";
+            } else {
+                document.getElementById(ID).className = "status_farbe_green";
+            }
+        }
+        displayTemperature("tempInnen1", 7);
+        displayTemperature("tempInnen2", 6);
+        displayTemperature("tempAußen", 3);
+
+        // Set light and heating status and color
+        // ToDo: Define a function that can be used for light and heating at once
+        // ToDo: Define heating part
+        var lichtStatus = "on";
+        if (lichtStatus == "off") {
+            document.getElementById("licht").className = "status_farbe_red";
+            document.getElementById("licht").innerHTML = "Off";
+        } else {
+            document.getElementById("licht").className = "status_farbe_green";
+            document.getElementById("licht").innerHTML = "On";
+        }
+    </script>
+</body>
+
+</html>
