@@ -43,11 +43,6 @@ def Messwerte():
     return render_template('Messwerte.html', async_mode=socketio.async_mode)
 
 
-#@app.route('/Einstellungen.html')
-#def index():
-#    return render_template('Einstellungen.html', async_mode=socketio.async_mode)
-
-
 @socketio.on('my_ping')
 def ping_pong():
     emit('my_pong')
