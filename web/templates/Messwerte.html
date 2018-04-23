@@ -2,20 +2,41 @@
 <html>
 
 <head>
-    <!-- css-Datei laden -->
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/design.css')}}"/>
     <meta charset="UTF-8">
-
-
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-	    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-            socket.on('my_response', function(msg) {
-            $('#log').text(msg.data);
-            });
-        });
+        switch(window.location.protocol) {
+            case 'http:':
+            case 'https:':
+                // remote file over http or https
+                console.log("Website");
+
+                // Load css style sheet
+                var myHref = "{{url_for('static', filename='../static/styles/design.css')}}";
+                $('head').append('<link rel="stylesheet" type="text/css" href="' + myHref + '"/>');
+
+                // Load websocket functions
+                $.getScript("//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js", function(data, status, jqxhr) {
+                $(document).ready(function() {
+                        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+                        socket.on('my_response', function(msg) {
+                        $('#log').text(msg.data);
+                        });
+                    });
+                });
+                break;
+            case 'file:':
+                // local file
+                console.log("File");
+                
+                // Load css style sheet
+                $('head').append('<link rel="stylesheet" type="text/css" href="../static/styles/design.css" />');
+                break;
+            default:
+                // Unknown protocol
+                console.log("Unknown Protocol");
+        }
     </script>
 </head>
 
@@ -38,7 +59,7 @@
                 <div class="column">Zeit</a>
                 </div>
                 <div class="column">
-                    <a id="log"></a>
+                    <a id="log">Not connected</a>
                 </div>
 
             </div>
