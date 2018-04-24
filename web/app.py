@@ -50,7 +50,6 @@ def test_connect():
         if thread is None:
             thread = socketio.start_background_task(target=background_thread)
     emit('my_response', {'data': 'Connected', 'temp': -40})
-    emit('my_response', {'data': 'Connected', 'count': 0})
 
 
 #if __name__ == '__main__':
