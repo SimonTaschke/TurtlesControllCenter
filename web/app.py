@@ -19,13 +19,10 @@ thread_lock = Lock()
 
 def background_thread():
     """Example of how to send server generated events to clients."""
-    count = 0
     while True:
         socketio.sleep(1)
-        count += 1
         time = datetime.datetime.now()
         socketio.emit('my_response',
-                      {'data': time.strftime('%H:%M:%S - %d.%m.%Y'), 'count': count})
 
 
 @app.route('/')
@@ -43,11 +40,6 @@ def Messwerte():
     return render_template('Messwerte.html', async_mode=socketio.async_mode)
 
 
-@socketio.on('my_ping')
-def ping_pong():
-    emit('my_pong')
-
-
 @socketio.on('connect')
 def test_connect():
     global thread
@@ -55,11 +47,6 @@ def test_connect():
         if thread is None:
             thread = socketio.start_background_task(target=background_thread)
     emit('my_response', {'data': 'Connected', 'count': 0})
-
-
-@socketio.on('disconnect')
-def test_disconnect():
-    print('Client disconnected', request.sid)
 
 
 #if __name__ == '__main__':

@@ -22,6 +22,8 @@
 
                         socket.on('my_response', function(msg) {
                         $('#log').text(msg.data);
+                        
+                        displayTemperature("tempInnen1", msg.temp )
                         });
                     });
                 });
