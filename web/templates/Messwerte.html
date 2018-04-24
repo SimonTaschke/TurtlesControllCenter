@@ -17,15 +17,21 @@
 
                 // Load websocket functions
                 $.getScript("//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js", function(data, status, jqxhr) {
-                $(document).ready(function() {
+                    $(document).ready(function() {
                         var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
                         socket.on('my_response', function(msg) {
-                        $('#log').text(msg.data);
+                            var data = JSON.parse(msg);
+                            console.log(data);
+                            $('#log').text(data.time + " - " + data.date);
+
+                            displayTemperature("tempInnen1", data.tempInside1);
+                            displayTemperature("tempInnen2", data.tempInside2);
+                            displayTemperature("tempAußen", data.tempOutside);
                         
-                        displayTemperature("tempInnen1", msg.temp )
+                            displayOnOffState("licht", data.light);
+                            });
                         });
-                    });
                 });
                 break;
             case 'file:':
@@ -368,16 +374,17 @@
             displayTemperature("tempAußen", 3);
 
             // Set light and heating status and color
-            // ToDo: Define a function that can be used for light and heating at once
             // ToDo: Define heating part
-            var lichtStatus = "on";
-            if (lichtStatus == "off") {
-                document.getElementById("licht").className = "status_farbe_red";
-                document.getElementById("licht").innerHTML = "Off";
-            } else {
-                document.getElementById("licht").className = "status_farbe_green";
-                document.getElementById("licht").innerHTML = "On";
+            function displayOnOffState(ID, state) {
+                if (state == "off") {
+                    document.getElementById(ID).className = "status_farbe_red";
+                    document.getElementById(ID).innerHTML = "Off";
+                } else {
+                    document.getElementById(ID).className = "status_farbe_green";
+                    document.getElementById(ID).innerHTML = "On";
+                }
             }
+            displayOnOffState("licht", "on");
         </script>
 
 </body>
