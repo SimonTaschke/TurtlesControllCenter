@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import datetime
+import random
 from threading import Lock
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
@@ -22,7 +23,9 @@ def background_thread():
     while True:
         socketio.sleep(1)
         time = datetime.datetime.now()
+        temp = random.randint(1, 10)
         socketio.emit('my_response',
+                      {'data': time.strftime('%H:%M:%S - %d.%m.%Y'), 'temp': temp})
 
 
 @app.route('/')
@@ -46,6 +49,7 @@ def test_connect():
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(target=background_thread)
+    emit('my_response', {'data': 'Connected', 'temp': -40})
     emit('my_response', {'data': 'Connected', 'count': 0})
 
 
