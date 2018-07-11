@@ -26,7 +26,6 @@ def background_thread():
         socketio.sleep(1)
         count+= 1
         time = datetime.datetime.now()
-        print(calendar.timegm(time))
         tempInside1 = random.randint(1, 10)
         tempInside2 = random.randint(1, 10)
         tempOutside = random.randint(1, 10)
