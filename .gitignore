@@ -1,0 +1,7 @@
+
+\.idea/
+
+log/
+
+*.rrd
+*.pyc

@@ -1,0 +1,81 @@
+{
+  "turtleHomeManager": {
+    "temperature": {
+      "measurementIntervall": 5,
+      "minTempDeg": -20,
+      "maxTempDeg": 60,
+      "database": {
+        "file": "temperature.rrd",
+        "statistics": [
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "5y", "resolution": "1d"},
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1M", "resolution": "1d"},
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1w", "resolution": "1h"},
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1d", "resolution": "10m"},
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1h", "resolution": "1m"},
+          {"type": ["AVERAGE"],               "period": "15m", "resolution": "5s"}
+        ]
+      },
+      "sensor": [
+        {"serial": "28-0417a31eccff", "location": "inside", "name": "innen1", "displayName":  "Innen (1)"},
+        {"serial": "28-0517a228efff", "location": "inside", "name": "innen2", "displayName":  "Innen (2)"},
+        {"serial": "28-0417a2ffe2ff", "location": "heating", "name": "heatControl", "displayName":  "Heizi"},
+        {"serial": "28-0417a2bf22ff", "location": "outside", "name": "ausen1", "displayName":  "Außen"}
+      ],
+      "virtualSensor": [
+        {"cummulateSensors": ["innen1", "innen2"] ,"name":  "innenMean", "displayName":  "Innen"}
+      ]
+    },
+    "devices": {
+      "database": {
+        "file": "devices.rrd",
+        "statistics": [
+          {"type": ["AVERAGE"], "period": "5y", "resolution": "3d"},
+          {"type": ["AVERAGE"], "period": "1M", "resolution": "1d"},
+          {"type": ["AVERAGE"], "period": "1w", "resolution": "3h"},
+          {"type": ["AVERAGE"], "period": "1d", "resolution": "1h"},
+          {"type": ["AVERAGE"], "period": "1h", "resolution": "5m"},
+          {"type": ["AVERAGE"], "period": "15m", "resolution": "1m"}
+        ]
+      },
+      "heating": {
+        "detectionTreshhold": 2,
+        "heatingController": "heatControl",
+        "reference": "innenMean"
+      }
+    }
+  },
+  "webserver": {
+    "statistics": {
+      "year": {
+        "period": "1y",
+        "temperature": {"resolution": "1d", "type": ["AVERAGE", "MIN", "MAX"], "displaySensor": ["ausen1", "innenMean"] },
+        "device": {"resolution": "3d"}
+      },
+      "month": {
+        "period": "1M",
+        "temperature": {"resolution": "1d", "type": ["AVERAGE", "MIN", "MAX"], "displaySensor": ["ausen1", "innenMean"]},
+        "device": {"resolution": "1d"}
+      },
+      "week": {
+        "period": "1w",
+        "temperature": {"resolution": "1h", "type": ["AVERAGE"], "displaySensor": ["ausen1", "innenMean"]},
+        "device": {"resolution": "3h"}
+      },
+      "day": {
+        "period": "1d",
+        "temperature": {"resolution": "10m", "type": ["AVERAGE"], "displaySensor": ["ausen1", "innenMean"]},
+        "device": {"resolution": "1h"}
+      },
+      "hour": {
+        "period": "1h",
+        "temperature": {"resolution": "1m", "type": ["AVERAGE"], "displaySensor": ["innen1", "innen2", "ausen1", "heatControl", "innenMean"]},
+        "device": {"resolution": "5m"}
+      },
+      "15min": {
+        "period": "15m",
+        "temperature": {"resolution": "5s", "type": ["AVERAGE"], "displaySensor": ["innen1", "innen2", "ausen1", "heatControl", "innenMean"]},
+        "device": {"resolution": "1m"}
+      }
+    }
+  }
+}
