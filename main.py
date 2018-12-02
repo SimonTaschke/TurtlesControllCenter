@@ -5,7 +5,6 @@ import json
 import multiprocessing
 import logging.handlers
 
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
@@ -17,7 +16,6 @@ consoleHandler.setFormatter(formatter)
 consoleHandler.setLevel(logging.INFO)
 logger.addHandler(fileHandler)
 logger.addHandler(consoleHandler)
-
 
 logger.info("Start main program.")
 ## Load ini File
@@ -33,7 +31,6 @@ webserverCfg = config['webserver']
 
 ## Initialize temperatur database
 logger.info("Create temperature database")
-print(config['turtleHomeManager']["temperature"]["database"]["statistics"])
 sensorNames = []
 webserverCfg["name"] = {}
 for iSensor in turtelHomeManagerCfg["temperature"]["sensor"]:
@@ -64,7 +61,6 @@ deviceDatabase = rrd_handler(config['turtleHomeManager']["devices"]["database"][
                              1,
                              ["Heizung", "Licht"],
                              config['turtleHomeManager']["devices"]["database"]["statistics"])
-
 
 p1 = multiprocessing.Process(target = turtelHomeManager.manageTurtleHome, args=(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase))
 p2 = multiprocessing.Process(target = webserver.startWebserver, args = (webserverCfg, temperatureDatabase, deviceDatabase))

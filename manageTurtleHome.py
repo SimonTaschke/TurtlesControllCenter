@@ -74,7 +74,6 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
 
         ## Create virtual temperature measurements
         for virtualSensor in virtualTemperatureSensorCfg:
-            nSensors = 0
             temperature = 0.0
             for iSensor in virtualSensor["cummulateSensors"]:
                 temperature += temperatureData[iSensor]

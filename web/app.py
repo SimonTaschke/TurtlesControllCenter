@@ -146,7 +146,7 @@ def sendStatusUpdate():
     data["time"] = timenow.strftime('%H:%M:%S')
     data["date"] = timenow.strftime('%d.%m.%Y')
 
-    time, devices = deviceDatabase.getLastInput()
+    _, devices = deviceDatabase.getLastInput()
     time, temperatures = temperatureDatabase.getLastInput()
     data["timeOfMeasurements"] = time.strftime('%H:%M:%S')
     data["dateOfMeasurements"] = time.strftime('%d.%m.%Y')
@@ -210,7 +210,6 @@ def startWebserver(webserverCfg, temperatureDB, deviceDB):
     global deviceDatabase
     global clients
     displayNames = webserverCfg["name"]
-    print(displayNames)
     temperatureDatabase = temperatureDB
     deviceDatabase = deviceDB
     statisticsCfg = webserverCfg['statistics']
