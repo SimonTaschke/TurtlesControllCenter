@@ -163,6 +163,8 @@ def sendStatusUpdate():
     logger.info('Send status information to all clients. Status is {}'.format(status))
     socketio.emit('sendStatusUpdate', status)
 
+
+# ToDo: Check if one could provde only a single route for everything
 @app.route('/')
 def index():
     return render_template('index.html', user_image="turtleHeader.jpg")
