@@ -62,14 +62,14 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
                 except:
                     temperature = None
                     logger.info("Could not read temperature from sensor {}. Set temperature to None.".format(iSensor.serial))
-                temperatureData[iSensor.name] = temperature
+                temperatureData[iSensor.name] = round(temperature, 1)
         else:
             i = 0
             for iSensor in temperatureSensor:
                 # Emulate Temperature
-                temperature = i * 5 + random.randint(0, 4)
+                temperature = i * 5 + random.randint(0, 4) + random.uniform(0.0, 1.0)
                 logger.info("Emulate temperature {} for sensor {}".format(temperature, iSensor.serial))
-                temperatureData[iSensor.name] = temperature
+                temperatureData[iSensor.name] = round(temperature, 1)
                 i+= 1
 
         ## Create virtual temperature measurements
@@ -77,7 +77,7 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
             temperature = 0.0
             for iSensor in virtualSensor["cummulateSensors"]:
                 temperature += temperatureData[iSensor]
-            temperatureData[virtualSensor["name"]] = (temperature/len(virtualSensor["cummulateSensors"]))
+            temperatureData[virtualSensor["name"]] = round(temperature/len(virtualSensor["cummulateSensors"]), 1)
 
         ## Check device state
         deltaTemperature = temperatureData[deviceCfg["heating"]["heatingController"]] - temperatureData[deviceCfg["heating"]["reference"]]
