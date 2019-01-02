@@ -152,7 +152,7 @@ def sendStatusUpdate():
     data["dateOfMeasurements"] = time.strftime('%d.%m.%Y')
 
     data["temperatureSensors"] = []
-    for sensorName in temperatures:
+    for sensorName in statusCfg["temperatureOrder"]:
         data["temperatureSensors"].append({"name": displayNames[sensorName], "temperature": temperatures[sensorName]})
 
     data["devices"] = []
@@ -211,10 +211,12 @@ def startWebserver(webserverCfg, temperatureDB, deviceDB):
     global temperatureDatabase
     global deviceDatabase
     global clients
+    global statusCfg
     displayNames = webserverCfg["name"]
     temperatureDatabase = temperatureDB
     deviceDatabase = deviceDB
     statisticsCfg = webserverCfg['statistics']
+    statusCfg = webserverCfg['status']
     clients = []
     try:
         socketio.run(app, '0.0.0.0')

@@ -45,6 +45,9 @@
     }
   },
   "webserver": {
+    "status": {
+      "temperatureOrder": ["innen1", "innen2", "innenMean", "ausen1", "heatControl"]
+    },
     "statistics": {
       "year": {
         "period": "1y",
