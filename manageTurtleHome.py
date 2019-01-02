@@ -18,14 +18,14 @@ logger.addHandler(consoleHandler)
 
 def checkHWSupport():
     logger.info('Checking for Operating system')
-    if platform.version() == '#42-Ubuntu SMP Tue Oct 23 15:48:01 UTC 2018':
+    if platform.linux_distribution()[0] == "Ubuntu":
         isRealHW = 0
         logger.info('Running on ubuntu machine. Do not use real sensor information.')
-    elif platform.version() == '#1047 SMP Sun Oct 29 12:19:23 GMT 2017': # pi
+    elif platform.linux_distribution()[0] == "debian": # pi
         isRealHW = 1
         logger.info('Running on Raspberry. Use real sensor information.')
     else:
-        logger.critical("Unknown Distribution " + platform.version() + " Stop Turtle Home Manager!")
+        logger.critical("Unknown Distribution " + platform.linux_distribution()[0] + " Stop Turtle Home Manager!")
         exit()
     return isRealHW
 
