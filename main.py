@@ -4,6 +4,8 @@ from database.rrd_Database import rrd_handler
 import json
 import multiprocessing
 import logging.handlers
+import os
+import platform
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -18,6 +20,14 @@ logger.addHandler(fileHandler)
 logger.addHandler(consoleHandler)
 
 logger.info("Start main program.")
+
+## Turn off raspberry pi onboard LEDs
+# Set the PWR LED to GPIO mode (set 'off' by default).
+if (platform.linux_distribution()[0] == "debian"):
+    logger.info("Turn off raspberry pi onboard LEDs")
+    os.system("echo gpio | sudo tee /sys/class/leds/led1/trigger")
+    os.system("echo 0 | sudo tee /sys/class/leds/led1/brightness")
+
 ## Load ini File
 logger.info("Read configuration file")
 try:
