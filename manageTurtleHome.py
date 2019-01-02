@@ -47,6 +47,8 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
     temperatureSensor = initializeTemperaturSensor(temperatureSensorCfg)
     measurementIntervall = temperatureDatabase.getMeasurementIntervall()
 
+    last_heating_temperature = None
+
     while True:
         logger.info("Start new measurement epoch.")
         startTime = time.time()
@@ -80,7 +82,12 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
             temperatureData[virtualSensor["name"]] = round(temperature/len(virtualSensor["cummulateSensors"]), 1)
 
         ## Check device state
-        deltaTemperature = temperatureData[deviceCfg["heating"]["heatingController"]] - temperatureData[deviceCfg["heating"]["reference"]]
+        if last_heating_temperature is None:
+            deltaTemperature = -1
+        else:
+            deltaTemperature = temperatureData[deviceCfg["heating"]["heatingController"]] - last_heating_temperature
+
+        last_heating_temperature = temperatureData[deviceCfg["heating"]["heatingController"]]
         if deltaTemperature > deviceCfg["heating"]["detectionTreshhold"]:
             heatingState = 1
         else:
