@@ -53,6 +53,11 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
     last_heating_temperature = None
     last_alert = float("-inf")
 
+    ## Inform about system restart
+    subject = "[NoReply][Info] Systemstart"
+    body = 'Der Turtle Home Manager wurde neu gestartet.'
+    send_mail(messengerCfg["gmail_user"], messengerCfg["gmail_password"], messengerCfg["info_subscriber"], subject, body)
+
     while True:
         logger.info("Start new measurement epoch.")
         startTime = time.time()
