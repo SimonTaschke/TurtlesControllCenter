@@ -3,6 +3,7 @@ import random
 import time
 import logging.handlers
 from sensor.ds20b18 import ds20b18
+from messenger.messenger import send_mail
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -42,12 +43,15 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
     isRealHW = checkHWSupport()
     temperatureSensorCfg = turtelHomeManagerCfg["temperature"]["sensor"]
     virtualTemperatureSensorCfg = turtelHomeManagerCfg["temperature"]["virtualSensor"]
+    temperature_alert_cfg = turtelHomeManagerCfg["temperature"]["alert"]
     deviceCfg = turtelHomeManagerCfg["devices"]
+    messengerCfg = turtelHomeManagerCfg["messenger"]
 
     temperatureSensor = initializeTemperaturSensor(temperatureSensorCfg)
     measurementIntervall = temperatureDatabase.getMeasurementIntervall()
 
     last_heating_temperature = None
+    last_alert = float("-inf")
 
     while True:
         logger.info("Start new measurement epoch.")
@@ -80,6 +84,34 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
             for iSensor in virtualSensor["cummulateSensors"]:
                 temperature += temperatureData[iSensor]
             temperatureData[virtualSensor["name"]] = round(temperature/len(virtualSensor["cummulateSensors"]), 1)
+
+        ## Check temperature limits
+        for sensor in temperature_alert_cfg:
+            if temperatureData[sensor["sensorname"]] < sensor["min"]:
+                if (time.time() - last_alert) < sensor["timelimit"]:
+                    logger.info("Alert time is within acceptance limit. Do not sent new alert. Last Alert: {}; time now: {}".format(last_alert, time.time()))
+                else:
+                    logger.critical("Temperature {} is below threshold {}".format(temperatureData[sensor["sensorname"]], sensor["min"]))
+                    subject = "[NoReply][Critical] Temperatur zu niedrig"
+                    body = 'Die Temperatur bei den Schildkroeten ist zu niedrig.\n\tSoll:\t> {} C\n\tIst:\t{} C\nBitte pruefen.'.format(sensor["min"], temperatureData[sensor["sensorname"]])
+                    response = send_mail(messengerCfg["gmail_user"], messengerCfg["gmail_password"], messengerCfg["alert_subscriber"], subject, body)
+                    if response == 0:
+                        logger.critical("Could not send warning to user.")
+                    else:
+                        last_alert = time.time()
+
+            if temperatureData[sensor["sensorname"]] > sensor["max"]:
+                if (time.time() - last_alert) < sensor["timelimit"]:
+                    logger.info("Alert time is within acceptance limit. Do not sent new alert. Last Alert: {}; time now: {}".format(last_alert, time.time()))
+                else:
+                    logger.critical("Temperature {} is above threshold {}".format(temperatureData[sensor["sensorname"]], sensor["max"]))
+                    subject = "[NoReply][Critical] Temperatur zu hoch"
+                    body = 'Die Temperatur bei den Schildkroeten ist zu hoch.\n\tSoll:\t< {} C\n\tIst:\t{} C\nBitte pruefen.'.format(sensor["max"], temperatureData[sensor["sensorname"]])
+                    response = send_mail(messengerCfg["gmail_user"], messengerCfg["gmail_password"], messengerCfg["alert_subscriber"], subject, body)
+                    if response == 0:
+                        logger.critical("Could not send warning to user.")
+                    else:
+                        last_alert = time.time()
 
         ## Check device state
         if last_heating_temperature is None:

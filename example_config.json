@@ -1,5 +1,11 @@
 {
   "turtleHomeManager": {
+    "messenger": {
+      "gmail_user": "user@gmail.com",
+      "gmail_password": "password",
+      "alert_subscriber": ["alert_subscriber@gmail.com"],
+      "info_subscriber": ["info_subscriber@googlemail.com"]
+    },
     "temperature": {
       "measurementIntervall": 5,
       "minTempDeg": -20,
@@ -23,6 +29,9 @@
       ],
       "virtualSensor": [
         {"cummulateSensors": ["innen1", "innen2"] ,"name":  "innenMean", "displayName":  "Innen"}
+      ],
+      "alert": [
+        {"sensorname": "innenMean", "min": 5, "max": 45, "timelimit": 900}
       ]
     },
     "devices": {
