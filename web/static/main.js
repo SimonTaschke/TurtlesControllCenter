@@ -37,7 +37,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _statistics_statistics_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./statistics/statistics.component */ "./src/app/statistics/statistics.component.ts");
 /* harmony import */ var _settings_settings_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./settings/settings.component */ "./src/app/settings/settings.component.ts");
-/* harmony import */ var _device_statistics_device_statistics_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./device-statistics/device-statistics.component */ "./src/app/device-statistics/device-statistics.component.ts");
+/* harmony import */ var _webcam_webcam_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./webcam/webcam.component */ "./src/app/webcam/webcam.component.ts");
+/* harmony import */ var _device_statistics_device_statistics_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./device-statistics/device-statistics.component */ "./src/app/device-statistics/device-statistics.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -49,10 +50,12 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var routes = [
     { path: 'settings', component: _settings_settings_component__WEBPACK_IMPORTED_MODULE_3__["SettingsComponent"] },
     { path: 'statistics', component: _statistics_statistics_component__WEBPACK_IMPORTED_MODULE_2__["StatisticsComponent"] },
-    { path: 'deviceStatistics', component: _device_statistics_device_statistics_component__WEBPACK_IMPORTED_MODULE_4__["DeviceStatisticsComponent"] },
+    { path: 'deviceStatistics', component: _device_statistics_device_statistics_component__WEBPACK_IMPORTED_MODULE_5__["DeviceStatisticsComponent"] },
+    { path: 'webcam', component: _webcam_webcam_component__WEBPACK_IMPORTED_MODULE_4__["WebcamComponent"] },
     { path: '', component: _statistics_statistics_component__WEBPACK_IMPORTED_MODULE_2__["StatisticsComponent"] }
 ];
 var AppRoutingModule = /** @class */ (function () {
@@ -166,12 +169,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _websocket_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./websocket.service */ "./src/app/websocket.service.ts");
 /* harmony import */ var _device_statistics_device_statistics_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./device-statistics/device-statistics.component */ "./src/app/device-statistics/device-statistics.component.ts");
 /* harmony import */ var _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./navigation/navigation.component */ "./src/app/navigation/navigation.component.ts");
+/* harmony import */ var _webcam_webcam_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./webcam/webcam.component */ "./src/app/webcam/webcam.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -195,7 +200,8 @@ var AppModule = /** @class */ (function () {
                 _settings_settings_component__WEBPACK_IMPORTED_MODULE_5__["SettingsComponent"],
                 _statistics_statistics_component__WEBPACK_IMPORTED_MODULE_6__["StatisticsComponent"],
                 _device_statistics_device_statistics_component__WEBPACK_IMPORTED_MODULE_9__["DeviceStatisticsComponent"],
-                _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_10__["NavigationComponent"]
+                _navigation_navigation_component__WEBPACK_IMPORTED_MODULE_10__["NavigationComponent"],
+                _webcam_webcam_component__WEBPACK_IMPORTED_MODULE_11__["WebcamComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -221,7 +227,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "    /* Button Status */\n    \n    .btn-group .button {\n        background-color: #73AD21;\n        /* Grün */\n        border: none;\n        color: white;\n        width: 150px;\n        height: 75px;\n        text-align: center;\n        text-decoration: none;\n        display: inline-block;\n        font-size: 16px;\n        cursor: pointer;\n        float: left;\n        margin-top: 30px;\n        margin-left: 10px;\n    }\n    \n    .btn-group .button:hover {\n        background-color: red;\n    }\n    \n    .btn-group .active {\n        background-color: blue;\n        border: none;\n        color: white;\n        padding: 15px 32px;\n        text-align: center;\n        text-decoration: none;\n        display: inline-block;\n        font-size: 16px;\n        cursor: pointer;\n        float: left;\n    }\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZGV2aWNlLXN0YXRpc3RpY3MvZGV2aWNlLXN0YXRpc3RpY3MuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiSUFBSSxtQkFBbUI7O0lBRW5CO1FBQ0ksMEJBQTBCO1FBQzFCLFVBQVU7UUFDVixhQUFhO1FBQ2IsYUFBYTtRQUNiLGFBQWE7UUFDYixhQUFhO1FBQ2IsbUJBQW1CO1FBQ25CLHNCQUFzQjtRQUN0QixzQkFBc0I7UUFDdEIsZ0JBQWdCO1FBQ2hCLGdCQUFnQjtRQUNoQixZQUFZO1FBQ1osaUJBQWlCO1FBQ2pCLGtCQUFrQjtLQUNyQjs7SUFFRDtRQUNJLHNCQUFzQjtLQUN6Qjs7SUFFRDtRQUNJLHVCQUF1QjtRQUN2QixhQUFhO1FBQ2IsYUFBYTtRQUNiLG1CQUFtQjtRQUNuQixtQkFBbUI7UUFDbkIsc0JBQXNCO1FBQ3RCLHNCQUFzQjtRQUN0QixnQkFBZ0I7UUFDaEIsZ0JBQWdCO1FBQ2hCLFlBQVk7S0FDZiIsImZpbGUiOiJzcmMvYXBwL2RldmljZS1zdGF0aXN0aWNzL2RldmljZS1zdGF0aXN0aWNzLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIgICAgLyogQnV0dG9uIFN0YXR1cyAqL1xuICAgIFxuICAgIC5idG4tZ3JvdXAgLmJ1dHRvbiB7XG4gICAgICAgIGJhY2tncm91bmQtY29sb3I6ICM3M0FEMjE7XG4gICAgICAgIC8qIEdyw7xuICovXG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgICAgY29sb3I6IHdoaXRlO1xuICAgICAgICB3aWR0aDogMTUwcHg7XG4gICAgICAgIGhlaWdodDogNzVweDtcbiAgICAgICAgdGV4dC1hbGlnbjogY2VudGVyO1xuICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG4gICAgICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICAgICAgZm9udC1zaXplOiAxNnB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZsb2F0OiBsZWZ0O1xuICAgICAgICBtYXJnaW4tdG9wOiAzMHB4O1xuICAgICAgICBtYXJnaW4tbGVmdDogMTBweDtcbiAgICB9XG4gICAgXG4gICAgLmJ0bi1ncm91cCAuYnV0dG9uOmhvdmVyIHtcbiAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogcmVkO1xuICAgIH1cbiAgICBcbiAgICAuYnRuLWdyb3VwIC5hY3RpdmUge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiBibHVlO1xuICAgICAgICBib3JkZXI6IG5vbmU7XG4gICAgICAgIGNvbG9yOiB3aGl0ZTtcbiAgICAgICAgcGFkZGluZzogMTVweCAzMnB4O1xuICAgICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTtcbiAgICAgICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xuICAgICAgICBmb250LXNpemU6IDE2cHg7XG4gICAgICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICAgICAgZmxvYXQ6IGxlZnQ7XG4gICAgfSJdfQ== */"
+module.exports = ".btn-group .button {\n    background-color: #73AD21;\n    border: none;\n    color: white;\n    width: 150px;\n    height: 75px;\n    text-align: center;\n    text-decoration: none;\n    display: inline-block;\n    font-size: 16px;\n    cursor: pointer;\n    float: left;\n    margin-top: 30px;\n    margin-left: 10px;\n}\n\n.btn-group .button:hover {\n    background-color: red;\n}\n\n.btn-group .active {\n    background-color: blue;\n    border: none;\n    color: white;\n    padding: 15px 32px;\n    text-align: center;\n    text-decoration: none;\n    display: inline-block;\n    font-size: 16px;\n    cursor: pointer;\n    float: left;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZGV2aWNlLXN0YXRpc3RpY3MvZGV2aWNlLXN0YXRpc3RpY3MuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLDBCQUEwQjtJQUMxQixhQUFhO0lBQ2IsYUFBYTtJQUNiLGFBQWE7SUFDYixhQUFhO0lBQ2IsbUJBQW1CO0lBQ25CLHNCQUFzQjtJQUN0QixzQkFBc0I7SUFDdEIsZ0JBQWdCO0lBQ2hCLGdCQUFnQjtJQUNoQixZQUFZO0lBQ1osaUJBQWlCO0lBQ2pCLGtCQUFrQjtDQUNyQjs7QUFFRDtJQUNJLHNCQUFzQjtDQUN6Qjs7QUFFRDtJQUNJLHVCQUF1QjtJQUN2QixhQUFhO0lBQ2IsYUFBYTtJQUNiLG1CQUFtQjtJQUNuQixtQkFBbUI7SUFDbkIsc0JBQXNCO0lBQ3RCLHNCQUFzQjtJQUN0QixnQkFBZ0I7SUFDaEIsZ0JBQWdCO0lBQ2hCLFlBQVk7Q0FDZiIsImZpbGUiOiJzcmMvYXBwL2RldmljZS1zdGF0aXN0aWNzL2RldmljZS1zdGF0aXN0aWNzLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuYnRuLWdyb3VwIC5idXR0b24ge1xuICAgIGJhY2tncm91bmQtY29sb3I6ICM3M0FEMjE7XG4gICAgYm9yZGVyOiBub25lO1xuICAgIGNvbG9yOiB3aGl0ZTtcbiAgICB3aWR0aDogMTUwcHg7XG4gICAgaGVpZ2h0OiA3NXB4O1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xuICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgZmxvYXQ6IGxlZnQ7XG4gICAgbWFyZ2luLXRvcDogMzBweDtcbiAgICBtYXJnaW4tbGVmdDogMTBweDtcbn1cblxuLmJ0bi1ncm91cCAuYnV0dG9uOmhvdmVyIHtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiByZWQ7XG59XG5cbi5idG4tZ3JvdXAgLmFjdGl2ZSB7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogYmx1ZTtcbiAgICBib3JkZXI6IG5vbmU7XG4gICAgY29sb3I6IHdoaXRlO1xuICAgIHBhZGRpbmc6IDE1cHggMzJweDtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgdGV4dC1kZWNvcmF0aW9uOiBub25lO1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICBmb250LXNpemU6IDE2cHg7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGZsb2F0OiBsZWZ0O1xufSJdfQ== */"
 
 /***/ }),
 
@@ -593,7 +599,7 @@ module.exports = "ul {\r\n    list-style-type: none;\r\n    margin: 0;\r\n    pa
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ul>\n    <li class=\"dropdown\">\n        <!-- <a href=\"javascript:void(0)\" class=\"dropbtn\">Messwerte</a> -->\n        <a class=\"dropbtn\" [routerLink]=\"['/statistics']\" [routerLinkActive]=\"['active']\">\n            Messwerte\n        </a>\n        <div class=\"dropdown-content\">\n            <a (click)=\"subscribeStatistics('15min')\" [routerLink]=\"['/statistics']\">15 Min</a>\n            <a (click)=\"subscribeStatistics('hour')\" [routerLink]=\"['/statistics']\">Stunde</a>\n            <a (click)=\"subscribeStatistics('day')\" [routerLink]=\"['/statistics']\">Tag</a>\n            <a (click)=\"subscribeStatistics('week')\" [routerLink]=\"['/statistics']\">Woche</a>\n            <a (click)=\"subscribeStatistics('month')\" [routerLink]=\"['/statistics']\">Monat</a>\n            <a (click)=\"subscribeStatistics('year')\" [routerLink]=\"['/statistics']\">Jahr</a>\n        </div>\n    </li>\n    <li class=\"dropdown\">\n        <a class=\"dropbtn\" [routerLink]=\"['/deviceStatistics']\" [routerLinkActive]=\"['active']\">\n            Geräte\n        </a>\n        <div class=\"dropdown-content\">\n            <a (click)=\"subscribeStatistics('15min')\" [routerLink]=\"['/deviceStatistics']\">15 Min</a>\n            <a (click)=\"subscribeStatistics('hour')\" [routerLink]=\"['/deviceStatistics']\">Stunde</a>\n            <a (click)=\"subscribeStatistics('day')\" [routerLink]=\"['/deviceStatistics']\">Tag</a>\n            <a (click)=\"subscribeStatistics('week')\" [routerLink]=\"['/deviceStatistics']\">Woche</a>\n            <a (click)=\"subscribeStatistics('month')\" [routerLink]=\"['/deviceStatistics']\">Monat</a>\n            <a (click)=\"subscribeStatistics('year')\" [routerLink]=\"['/deviceStatistics']\">Jahr</a>\n        </div>\n    </li>\n    <li class=\"dropdown\">\n        <a class=\"dropbtn\" [routerLink]=\"['/settings']\" [routerLinkActive]=\"['active']\">\n            Einstellungen\n        </a>\n    </li>\n    <div class=\"time\">\n        {{time}} - {{date}}\n    </div>\n</ul>"
+module.exports = "<ul>\n    <li class=\"dropdown\">\n        <!-- <a href=\"javascript:void(0)\" class=\"dropbtn\">Messwerte</a> -->\n        <a class=\"dropbtn\" [routerLink]=\"['/statistics']\" [routerLinkActive]=\"['active']\">\n            Messwerte\n        </a>\n        <div class=\"dropdown-content\">\n            <a (click)=\"subscribeStatistics('15min')\" [routerLink]=\"['/statistics']\">15 Min</a>\n            <a (click)=\"subscribeStatistics('hour')\" [routerLink]=\"['/statistics']\">Stunde</a>\n            <a (click)=\"subscribeStatistics('day')\" [routerLink]=\"['/statistics']\">Tag</a>\n            <a (click)=\"subscribeStatistics('week')\" [routerLink]=\"['/statistics']\">Woche</a>\n            <a (click)=\"subscribeStatistics('month')\" [routerLink]=\"['/statistics']\">Monat</a>\n            <a (click)=\"subscribeStatistics('year')\" [routerLink]=\"['/statistics']\">Jahr</a>\n        </div>\n    </li>\n    <li class=\"dropdown\">\n        <a class=\"dropbtn\" [routerLink]=\"['/deviceStatistics']\" [routerLinkActive]=\"['active']\">\n            Geräte\n        </a>\n        <div class=\"dropdown-content\">\n            <a (click)=\"subscribeStatistics('15min')\" [routerLink]=\"['/deviceStatistics']\">15 Min</a>\n            <a (click)=\"subscribeStatistics('hour')\" [routerLink]=\"['/deviceStatistics']\">Stunde</a>\n            <a (click)=\"subscribeStatistics('day')\" [routerLink]=\"['/deviceStatistics']\">Tag</a>\n            <a (click)=\"subscribeStatistics('week')\" [routerLink]=\"['/deviceStatistics']\">Woche</a>\n            <a (click)=\"subscribeStatistics('month')\" [routerLink]=\"['/deviceStatistics']\">Monat</a>\n            <a (click)=\"subscribeStatistics('year')\" [routerLink]=\"['/deviceStatistics']\">Jahr</a>\n        </div>\n    </li>\n    <li class=\"dropdown\">\n        <a class=\"dropbtn\" [routerLink]=\"['/settings']\" [routerLinkActive]=\"['active']\">\n            Einstellungen\n        </a>\n    </li>\n    <li class=\"dropdown\">\n            <a class=\"dropbtn\" [routerLink]=\"['/webcam']\" [routerLinkActive]=\"['active']\">\n                Webcam\n            </a>\n        </li>\n    <div class=\"time\">\n        {{time}} - {{date}}\n    </div>\n</ul>"
 
 /***/ }),
 
@@ -814,9 +820,6 @@ var StatisticsComponent = /** @class */ (function () {
     function StatisticsComponent(websocketService) {
         this.websocketService = websocketService;
     }
-    StatisticsComponent.prototype.subscribeStatistics = function (staticsListener) {
-        this.websocketService.subscribeStatistics(staticsListener);
-    };
     StatisticsComponent.prototype.ngOnInit = function () {
         this.websocketService.subscribeStatitics();
         this.websocketService.temperaturStatistics.subscribe(function (statistics) {
@@ -1034,6 +1037,69 @@ var StatusComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/webcam/webcam.component.css":
+/*!*********************************************!*\
+  !*** ./src/app/webcam/webcam.component.css ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3dlYmNhbS93ZWJjYW0uY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/webcam/webcam.component.html":
+/*!**********************************************!*\
+  !*** ./src/app/webcam/webcam.component.html ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  webcam works!\n  <img src=\"/static/img/webcam.jpg\">  \n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/webcam/webcam.component.ts":
+/*!********************************************!*\
+  !*** ./src/app/webcam/webcam.component.ts ***!
+  \********************************************/
+/*! exports provided: WebcamComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WebcamComponent", function() { return WebcamComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var WebcamComponent = /** @class */ (function () {
+    function WebcamComponent() {
+    }
+    WebcamComponent.prototype.ngOnInit = function () {
+    };
+    WebcamComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-webcam',
+            template: __webpack_require__(/*! ./webcam.component.html */ "./src/app/webcam/webcam.component.html"),
+            styles: [__webpack_require__(/*! ./webcam.component.css */ "./src/app/webcam/webcam.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], WebcamComponent);
+    return WebcamComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/websocket.service.ts":
 /*!**************************************!*\
   !*** ./src/app/websocket.service.ts ***!
@@ -1185,7 +1251,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/simon/turtles/web/turtle-app/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /home/simon/turtles/turtle-app/src/main.ts */"./src/main.ts");
 
 
 /***/ }),

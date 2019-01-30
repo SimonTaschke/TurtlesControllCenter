@@ -2,8 +2,11 @@ import platform
 import random
 import time
 import logging.handlers
+import datetime
+import imageio
 from sensor.ds20b18 import ds20b18
 from messenger.messenger import send_mail
+import os
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -57,6 +60,9 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
     subject = "[NoReply][Info] Systemstart"
     body = 'Der Turtle Home Manager wurde neu gestartet.'
     send_mail(messengerCfg["gmail_user"], messengerCfg["gmail_password"], messengerCfg["info_subscriber"], subject, body)
+
+    # video animated gif writer
+    gif_writer = imageio.get_writer('./web/static/img/movie.gif', mode='I')
 
     while True:
         logger.info("Start new measurement epoch.")
@@ -149,6 +155,18 @@ def manageTurtleHome(turtelHomeManagerCfg, temperatureDatabase, deviceDatabase):
             deviceDatabase.update([heatingState, lightState])
         except:
             logger.error("Could not update device database.")
+
+        ## Take image
+        datetime_object = datetime.datetime.fromtimestamp(startTime)
+        image_name = 'web/static/img/webcam/' + datetime_object.strftime("%Y%m%d_%H%M%S") + '.jpg'
+        os.system("./sensor/webcam.sh " + image_name)
+        os.system("cp ./" + image_name + " ./web/static/img/webcam.jpg -f")
+
+
+
+        ## Video animated gif
+        image = imageio.imread("./" + image_name)
+        gif_writer.append_data(image)
 
         # Sleep
         deltaTime = (startTime + measurementIntervall) - time.time()

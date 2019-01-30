@@ -181,6 +181,11 @@ def settings():
 def deviceStatistics():
     return render_template('index.html')  # Angular will handle the routing
 
+@app.route('/webcam')
+def webcam():
+    return render_template('index.html')  # Angular will handle the routing
+
+
 @socketio.on('connect')
 def test_connect():
     clients.append(request.sid)

@@ -1,6 +1,7 @@
 
 \.idea/
-
+web/static/img/webcam/*
+*.gif
 log/
 config.json
 *.rrd
