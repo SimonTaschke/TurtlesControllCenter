@@ -1,0 +1,21 @@
+{
+  "measurement_intervall": 5,
+  "emulate_sensors": true,
+  "sensor": [
+    {"serial": "28-0417a31eccff", "name": "innen1", "display_name": "Innen (1)"},
+    {"serial": "28-0517a228efff", "name": "innen2", "display_name": "Innen (2)"},
+    {"serial": "28-0417a2ffe2ff", "name": "heatControl", "display_name": "Heizi"},
+    {"serial": "28-0417a2bf22ff", "name": "ausen1", "display_name": "Außen"}
+  ],
+  "virtual_sensor": [
+    {"cummulate_sensors": ["innen1", "innen2"] ,"name": "innenMean", "display_name": "Innen"}
+  ],
+  "statistics": [
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1y", "resolution": "3d"},
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1M", "resolution": "1d"},
+          {"type": ["AVERAGE"],               "period": "1w", "resolution": "1h"},
+          {"type": ["AVERAGE"],               "period": "1d", "resolution": "10m"},
+          {"type": ["AVERAGE"],               "period": "1h", "resolution": "1m"},
+          {"type": ["AVERAGE"],               "period": "15m", "resolution": "5s"}
+        ]
+}

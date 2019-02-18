@@ -38,7 +38,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _statistics_statistics_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./statistics/statistics.component */ "./src/app/statistics/statistics.component.ts");
 /* harmony import */ var _settings_settings_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./settings/settings.component */ "./src/app/settings/settings.component.ts");
 /* harmony import */ var _webcam_webcam_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./webcam/webcam.component */ "./src/app/webcam/webcam.component.ts");
-/* harmony import */ var _device_statistics_device_statistics_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./device-statistics/device-statistics.component */ "./src/app/device-statistics/device-statistics.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -50,11 +49,10 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
-
 var routes = [
     { path: 'settings', component: _settings_settings_component__WEBPACK_IMPORTED_MODULE_3__["SettingsComponent"] },
     { path: 'statistics', component: _statistics_statistics_component__WEBPACK_IMPORTED_MODULE_2__["StatisticsComponent"] },
-    { path: 'deviceStatistics', component: _device_statistics_device_statistics_component__WEBPACK_IMPORTED_MODULE_5__["DeviceStatisticsComponent"] },
+    // { path: 'deviceStatistics', component: DeviceStatisticsComponent},
     { path: 'webcam', component: _webcam_webcam_component__WEBPACK_IMPORTED_MODULE_4__["WebcamComponent"] },
     { path: '', component: _statistics_statistics_component__WEBPACK_IMPORTED_MODULE_2__["StatisticsComponent"] }
 ];
@@ -599,7 +597,7 @@ module.exports = "ul {\r\n    list-style-type: none;\r\n    margin: 0;\r\n    pa
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ul>\n    <li class=\"dropdown\">\n        <!-- <a href=\"javascript:void(0)\" class=\"dropbtn\">Messwerte</a> -->\n        <a class=\"dropbtn\" [routerLink]=\"['/statistics']\" [routerLinkActive]=\"['active']\">\n            Messwerte\n        </a>\n        <div class=\"dropdown-content\">\n            <a (click)=\"subscribeStatistics('15min')\" [routerLink]=\"['/statistics']\">15 Min</a>\n            <a (click)=\"subscribeStatistics('hour')\" [routerLink]=\"['/statistics']\">Stunde</a>\n            <a (click)=\"subscribeStatistics('day')\" [routerLink]=\"['/statistics']\">Tag</a>\n            <a (click)=\"subscribeStatistics('week')\" [routerLink]=\"['/statistics']\">Woche</a>\n            <a (click)=\"subscribeStatistics('month')\" [routerLink]=\"['/statistics']\">Monat</a>\n            <a (click)=\"subscribeStatistics('year')\" [routerLink]=\"['/statistics']\">Jahr</a>\n        </div>\n    </li>\n    <li class=\"dropdown\">\n        <a class=\"dropbtn\" [routerLink]=\"['/deviceStatistics']\" [routerLinkActive]=\"['active']\">\n            Geräte\n        </a>\n        <div class=\"dropdown-content\">\n            <a (click)=\"subscribeStatistics('15min')\" [routerLink]=\"['/deviceStatistics']\">15 Min</a>\n            <a (click)=\"subscribeStatistics('hour')\" [routerLink]=\"['/deviceStatistics']\">Stunde</a>\n            <a (click)=\"subscribeStatistics('day')\" [routerLink]=\"['/deviceStatistics']\">Tag</a>\n            <a (click)=\"subscribeStatistics('week')\" [routerLink]=\"['/deviceStatistics']\">Woche</a>\n            <a (click)=\"subscribeStatistics('month')\" [routerLink]=\"['/deviceStatistics']\">Monat</a>\n            <a (click)=\"subscribeStatistics('year')\" [routerLink]=\"['/deviceStatistics']\">Jahr</a>\n        </div>\n    </li>\n    <li class=\"dropdown\">\n        <a class=\"dropbtn\" [routerLink]=\"['/settings']\" [routerLinkActive]=\"['active']\">\n            Einstellungen\n        </a>\n    </li>\n    <li class=\"dropdown\">\n            <a class=\"dropbtn\" [routerLink]=\"['/webcam']\" [routerLinkActive]=\"['active']\">\n                Webcam\n            </a>\n        </li>\n    <div class=\"time\">\n        {{time}} - {{date}}\n    </div>\n</ul>"
+module.exports = "<ul>\n    <li class=\"dropdown\">\n        <!-- <a href=\"javascript:void(0)\" class=\"dropbtn\">Messwerte</a> -->\n        <a class=\"dropbtn\" [routerLink]=\"['/statistics']\" [routerLinkActive]=\"['active']\">\n            Messwerte\n        </a>\n        <div class=\"dropdown-content\">\n            <a (click)=\"subscribeStatistics('15m')\" [routerLink]=\"['/statistics']\">15 Min</a>\n            <a (click)=\"subscribeStatistics('1h')\" [routerLink]=\"['/statistics']\">Stunde</a>\n            <a (click)=\"subscribeStatistics('1d')\" [routerLink]=\"['/statistics']\">Tag</a>\n            <a (click)=\"subscribeStatistics('1w')\" [routerLink]=\"['/statistics']\">Woche</a>\n            <a (click)=\"subscribeStatistics('1M')\" [routerLink]=\"['/statistics']\">Monat</a>\n            <a (click)=\"subscribeStatistics('1y')\" [routerLink]=\"['/statistics']\">Jahr</a>\n        </div>\n    </li>\n    <!-- <li class=\"dropdown\">\n        <a class=\"dropbtn\" [routerLink]=\"['/deviceStatistics']\" [routerLinkActive]=\"['active']\">\n            Geräte\n        </a>\n        <div class=\"dropdown-content\">\n            <a (click)=\"subscribeStatistics('15m')\" [routerLink]=\"['/deviceStatistics']\">15 Min</a>\n            <a (click)=\"subscribeStatistics('1h')\" [routerLink]=\"['/deviceStatistics']\">Stunde</a>\n            <a (click)=\"subscribeStatistics('1d')\" [routerLink]=\"['/deviceStatistics']\">Tag</a>\n            <a (click)=\"subscribeStatistics('1w')\" [routerLink]=\"['/deviceStatistics']\">Woche</a>\n            <a (click)=\"subscribeStatistics('1M')\" [routerLink]=\"['/deviceStatistics']\">Monat</a>\n            <a (click)=\"subscribeStatistics('1y')\" [routerLink]=\"['/deviceStatistics']\">Jahr</a>\n        </div>\n    </li> -->\n    <li class=\"dropdown\">\n        <a class=\"dropbtn\" [routerLink]=\"['/settings']\" [routerLinkActive]=\"['active']\">\n            Einstellungen\n        </a>\n    </li>\n    <li class=\"dropdown\">\n            <a class=\"dropbtn\" [routerLink]=\"['/webcam']\" [routerLinkActive]=\"['active']\">\n                Webcam\n            </a>\n        </li>\n    <div class=\"time\">\n        {{time}} - {{date}}\n    </div>\n</ul>"
 
 /***/ }),
 
@@ -635,8 +633,8 @@ var NavigationComponent = /** @class */ (function () {
     };
     NavigationComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.websocketService.timeNow.subscribe(function (timeNow) { _this.time = timeNow; });
-        this.websocketService.dateNow.subscribe(function (dateNow) { _this.date = dateNow; });
+        this.websocketService.time.subscribe(function (time) { _this.time = time; });
+        this.websocketService.date.subscribe(function (date) { _this.date = date; });
     };
     NavigationComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -877,12 +875,18 @@ function showStatistics(staticsData) {
                 }
             },
             hAxis: {
+                title: 'Datum / Uhrzeit',
+                formatType: 'medium',
                 viewWindow: {
                     min: dataColumns[0][0],
                     max: dataColumns[dataColumns.length - 1][0]
-                }
+                },
             }
         };
+        var date_formatter = new google.visualization.DateFormat({
+            pattern: "hh:mm - dd MMM yyyy"
+        });
+        date_formatter.format(data, 0); // Where 0 is the index of the column
         var chart = new google.visualization.LineChart(document.getElementById('linechart_material'));
         chart.draw(data, options);
     }
@@ -961,7 +965,7 @@ module.exports = "/* Two equal columns that floats next to each other */\r\n\r\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h3>Letztes Update</h3>\n\n\n<div class=\"column\">\n    <div class=\"status_text\">Zeit</div>\n</div>\n<div class=\"column\">\n    <div class=\"status_farbe_green\">{{time}}</div>\n</div>\n\n<div class=\"column\">\n    <div class=\"status_text\">Datum</div>\n</div>\n<div class=\"column\">\n    <div class=\"status_farbe_green\">{{date}}</div>\n</div>\n\n<div *ngFor=\"let device of devices\">\n    <div class=\"column\">\n        <div class=\"status_text\">{{device.name}}</div>\n    </div>\n    <div class=\"column\">\n        <div class={{getDeviceStyle(device.state)}}>{{device.state}}</div>\n    </div>\n</div>\n\n<div *ngFor=\"let sensor of temperatureSensors\">\n    <div class=\"column\">\n        <div class=\"status_text\">{{sensor.name}}</div>\n    </div>\n    <div class=\"column\">\n        <div class={{getTemperatureStyle(sensor.temperature)}}>{{sensor.temperature}}</div>\n    </div>\n</div>"
+module.exports = "<h3>Letztes Update</h3>\n\n\n<!-- <div class=\"column\">\n    <div class=\"status_text\">Zeit</div>\n</div>\n<div class=\"column\">\n    <div class=\"status_farbe_green\">{{time}}</div>\n</div>\n\n<div class=\"column\">\n    <div class=\"status_text\">Datum</div>\n</div>\n<div class=\"column\">\n    <div class=\"status_farbe_green\">{{date}}</div>\n</div> -->\n\n<div *ngFor=\"let device of devices\">\n    <div class=\"column\">\n        <div class=\"status_text\">{{device.name}}</div>\n    </div>\n    <div class=\"column\">\n        <div class={{getDeviceStyle(device.state)}}>{{device.state}}</div>\n    </div>\n</div>\n\n<div *ngFor=\"let sensor of temperatureSensors\">\n    <div class=\"column\">\n        <div class=\"status_text\">{{sensor.name}}</div>\n    </div>\n    <div class=\"column\">\n        <div class={{getTemperatureStyle(sensor.temperature)}}>{{sensor.temperature}}</div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1010,11 +1014,6 @@ var StatusComponent = /** @class */ (function () {
         }
         ;
     };
-    //constructor(private statusService: StatusService) { }
-    // getTemperature(): void {
-    //   this.statusService.getTemperature()
-    //   .subscribe(temperatureSensors => this.temperatureSensors = temperatureSensors);
-    // }
     StatusComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.websocketService.temperatureSensors.subscribe(function (temperatureSensors) { _this.temperatureSensors = temperatureSensors; });
@@ -1055,7 +1054,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  webcam works!\n  <img src=\"/static/img/webcam.jpg\">  \n</p>\n"
+module.exports = "<p>\n  <img src={{webcam_file}} />  \n</p>"
 
 /***/ }),
 
@@ -1070,6 +1069,7 @@ module.exports = "<p>\n  webcam works!\n  <img src=\"/static/img/webcam.jpg\">  
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WebcamComponent", function() { return WebcamComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _websocket_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../websocket.service */ "./src/app/websocket.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1080,10 +1080,14 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var WebcamComponent = /** @class */ (function () {
-    function WebcamComponent() {
+    function WebcamComponent(websocketService) {
+        this.websocketService = websocketService;
     }
     WebcamComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.websocketService.webcam_file.subscribe(function (webcam_file) { _this.webcam_file = webcam_file; });
     };
     WebcamComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1091,7 +1095,7 @@ var WebcamComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./webcam.component.html */ "./src/app/webcam/webcam.component.html"),
             styles: [__webpack_require__(/*! ./webcam.component.css */ "./src/app/webcam/webcam.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_websocket_service__WEBPACK_IMPORTED_MODULE_1__["WebsocketService"]])
     ], WebcamComponent);
     return WebcamComponent;
 }());
@@ -1136,12 +1140,33 @@ var WebsocketService = /** @class */ (function () {
         this.dateOfMeasurements = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
         this.temperaturStatistics = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
         this.deviceStatistics = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
-        this.statisticsListener = "15min";
+        this.statisticsListener = "15m";
+        this.webcam_file = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.time = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.date = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
         this.test = 1;
     }
     WebsocketService.prototype.connect = function () {
         var self = this; // ToDo: Optimize
         this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1__(location.protocol + '//' + document.domain + ':' + location.port);
+        this.socket.on('time', function (message) {
+            var data = JSON.parse(message);
+            self.time.next(data.time);
+            self.date.next(data.date);
+        });
+        this.socket.on('temperature', function (message) {
+            console.log(JSON.parse(message));
+            self.temperatureSensors.next(JSON.parse(message));
+        });
+        this.socket.on('webcam', function (message) {
+            console.log(message);
+            self.webcam_file.next(message);
+        });
+        this.socket.on('temperature_statistic', function (message) {
+            console.log(JSON.parse(message));
+            var temperaturData = JSON.parse(message);
+            self.temperaturStatistics.next(temperaturData);
+        });
         this.socket.on('sendStatusUpdate', function (message) {
             var data = JSON.parse(message);
             self.temperatureSensors.next(data.temperatureSensors);
