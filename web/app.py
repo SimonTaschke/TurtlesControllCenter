@@ -61,29 +61,12 @@ def send_webcam(message):
     socketio.emit('webcam', message['data'].decode('utf-8'))
 
 
-# ToDo: Check if one could provide only a single route for everything
 @app.route('/')
-def index():
-    return render_template('index.html', user_image="turtleHeader.jpg")
-
-
 @app.route('/statistics')
-def statistics():
-    return render_template('index.html')  # Angular will handle the routing
-
-
 @app.route('/settings')
-def settings():
-    return render_template('index.html')  # Angular will handle the routing
-
-
 @app.route('/deviceStatistics')
-def deviceStatistics():
-    return render_template('index.html')  # Angular will handle the routing
-
-
 @app.route('/webcam')
-def webcam():
+def index():
     return render_template('index.html')  # Angular will handle the routing
 
 
