@@ -1180,6 +1180,7 @@ var WebsocketService = /** @class */ (function () {
             console.log("ToDo");
             // ToDo
         });
+        this.socket;
         this.socket.on('sendStatistics', function (temperaturDataMsg, deviceDataMsg) {
             var temperaturData = JSON.parse(temperaturDataMsg);
             var deviceData = JSON.parse(deviceDataMsg);
@@ -1191,7 +1192,12 @@ var WebsocketService = /** @class */ (function () {
     WebsocketService.prototype.subscribeStatitics = function () {
         this.socket.emit('subscribeStatistics', { room: this.statisticsListener });
     };
+    WebsocketService.prototype.leaveRoom = function (room) {
+        this.socket.emit('leaveRoom', { room: room });
+    };
+    ;
     WebsocketService.prototype.subscribeStatistics = function (newStaticsListener) {
+        this.leaveRoom(this.statisticsListener);
         this.statisticsListener = newStaticsListener;
         this.subscribeStatitics();
     };

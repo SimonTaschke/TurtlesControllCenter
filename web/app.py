@@ -22,11 +22,11 @@ r = redis.Redis()
 def background_thread():
     global thread
     p = r.pubsub()
-    p.subscribe(**{'temperature': send_temperature})
-    p.subscribe(**{'snapshot': send_webcam})
+    p.subscribe(**{'temperature': temperature_handler})
+    p.subscribe(**{'snapshot': webcam_handler})
     config = json.loads(r.get("temperature_config"))
     for i_statistic in config["statistics"]:
-        p.subscribe(**{"temperature:statistics:{}".format(i_statistic["period"]): send_statistics})
+        p.subscribe(**{"temperature:statistics:{}".format(i_statistic["period"]): statistics_handler})
 
     while len(clients) > 0:
         p.get_message()
@@ -35,11 +35,36 @@ def background_thread():
     thread = None
 
 
-def send_statistics(message):
+def temperature_handler(message):
+    message = json.loads(message['data'].decode('utf-8'))
+    send_temperature(message)
+
+
+def send_temperature(message, room=None):
+    data = []
+    for sensor in message:
+        data.append({"name": sensor, "temperature": message[sensor]})
+    socketio.emit('temperature', json.dumps(data), room=room)
+
+
+def statistics_handler(message):
     channel = message['channel'].decode('utf-8')
     channel = (channel.split(":"))
     room = channel[2]
-    socketio.emit('temperature_statistic', message['data'].decode('utf-8'), room=room)
+    data = message['data'].decode('utf-8')
+    send_statistics(data, room)
+
+
+def send_statistics(message, room=None):
+    socketio.emit('temperature_statistic', message, room=room)
+
+
+def webcam_handler(message):
+    send_webcam(message['data'].decode('utf-8'))
+
+
+def send_webcam(message, room=None):
+    socketio.emit('webcam', message, room=room)
 
 
 def send_time():
@@ -47,18 +72,6 @@ def send_time():
     data = json.dumps({"time": timenow.strftime('%H:%M:%S'),
             "date": timenow.strftime('%d.%m.%Y')})
     socketio.emit('time', data)
-
-
-def send_temperature(message):
-    message = json.loads(message['data'].decode('utf-8'))
-    data = []
-    for sensor in message:
-        data.append({"name": sensor, "temperature": message[sensor]})
-    socketio.emit('temperature', json.dumps(data))
-
-
-def send_webcam(message):
-    socketio.emit('webcam', message['data'].decode('utf-8'))
 
 
 @app.route('/')
@@ -73,16 +86,10 @@ def index():
 @socketio.on('connect')
 def connect():
     # Send current temperature data
-    message = r.get('temperature')
-    message = json.loads(message.decode('utf-8'))
-    data = []
-    config = json.loads(r.get("temperature_config").decode('utf-8'))
-    for sensor in message:
-        data.append({"name": sensor, "temperature": message[sensor]})
-    socketio.emit('temperature', json.dumps(data), room=request.sid)
+    send_temperature(json.loads(r.get('temperature').decode('utf-8')), room=request.sid)
 
     # Send current webcam data
-    socketio.emit('webcam',  r.get('snapshot').decode('utf-8'), room=request.sid)
+    send_webcam(r.get('snapshot').decode('utf-8'), room=request.sid)
 
     clients.append(request.sid)
     global thread
@@ -96,14 +103,17 @@ def disconnect():
     clients.remove(request.sid)
 
 
+@socketio.on('leaveRoom')
+def leaveRoom(message):
+    leave_room(message["room"])
+
+
 @socketio.on('subscribeStatistics')
-def subscribeRoom(message):
-    config = json.loads(r.get("temperature_config"))
-    for i_statistic in config["statistics"]:
-        leave_room(i_statistic["period"])
+def subscribeStatistics(message):
     join_room(message["room"])
-    data = r.get("temperature:statistics:{}".format(message["room"]))
-    socketio.emit('temperature_statistic', data.decode('utf-8'), room=request.sid)
+    data = r.get("temperature:statistics:{}".format(message["room"])).decode('utf-8')
+    send_statistics(data, room=request.sid)
+
 
 def startWebserver():
     global clients
