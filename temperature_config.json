@@ -11,11 +11,11 @@
     {"cummulate_sensors": ["innen1", "innen2"] ,"name": "innenMean", "display_name": "Innen"}
   ],
   "statistics": [
-          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1y", "resolution": "3d"},
-          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1M", "resolution": "1d"},
-          {"type": ["AVERAGE"],               "period": "1w", "resolution": "1h"},
-          {"type": ["AVERAGE"],               "period": "1d", "resolution": "10m"},
-          {"type": ["AVERAGE"],               "period": "1h", "resolution": "1m"},
-          {"type": ["AVERAGE"],               "period": "15m", "resolution": "5s"}
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1y", "resolution": "3d", "display": ["innenMean", "ausen1"]},
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1M", "resolution": "1d", "display": ["innenMean", "ausen1"]},
+          {"type": ["AVERAGE"],               "period": "1w", "resolution": "1h", "display": ["innenMean", "ausen1"]},
+          {"type": ["AVERAGE"],               "period": "1d", "resolution": "10m", "display": ["innen1", "innen2", "heatcontrol", "innenMean", "ausen1"]},
+          {"type": ["AVERAGE"],               "period": "1h", "resolution": "1m", "display": ["innen1", "innen2", "heatcontrol", "innenMean", "ausen1"]},
+          {"type": ["AVERAGE"],               "period": "15m", "resolution": "5s", "display": ["innen1", "innen2", "heatcontrol", "innenMean", "ausen1"]}
         ]
 }

@@ -4,13 +4,26 @@ import roundRobinHandler
 import temperatureProvider
 import web.app as app
 import webcamProvider
+import json
 
 r = redis.Redis()
 
+# temperature config
 filename = "temperature_config.json"
-config = open(filename).read()
+config = json.loads(open(filename).read())
+# create sensor dictionary
+dictionary = {}
+for sensor in config["sensor"]:
+    dictionary[sensor["name"]] = sensor["display_name"]
+for sensor in config["virtual_sensor"]:
+    dictionary[sensor["name"]] = sensor["display_name"]
+config["sensor_dictionary"] = dictionary
+r.set("temperature_config", json.dumps(config))
 
-r.set("temperature_config", config)
+# webcam config
+filename = "webcam_config.json"
+config = open(filename).read()
+r.set("webcam_config", config)
 
 p1 = multiprocessing.Process(target=roundRobinHandler.main)
 p2 = multiprocessing.Process(target=temperatureProvider.main)

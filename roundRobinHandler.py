@@ -6,6 +6,9 @@ import rrdtool
 from datetime import datetime
 import numpy as np
 
+r = redis.Redis()
+
+
 class RrdHandler:
     def __init__(self, filename, measurement_intervall, sensor_names, statistics):
         self.filename = filename
@@ -40,9 +43,12 @@ class RrdHandler:
             data_string = data_string + ":" + str(dict[sensor])
         rrdtool.update(self.filename, data_string)
 
-    def getData(self, period, resolution, type):
+    def getData(self, period, resolution, type, display_sensors):
         keys = []
         measurements = np.array([])
+        config = json.loads(r.get("temperature_config").decode('utf-8'))
+        dictionary = config["sensor_dictionary"]
+
         for i_type in type:
             # period        requested time interval as string, e.g. 1s
             # resolution    data resolution as string, e.g 1s, 15m, 1d
@@ -58,11 +64,16 @@ class RrdHandler:
                 suffix = " min"
             elif i_type == "MAX":
                 suffix = " max"
-
-            key = [s + suffix for s in result[1]]
-            keys.extend(key)
             measurement = np.array(result[2])
-            measurements = np.hstack((measurements, measurement)) if measurements.size else measurement
+            sensors = result[1]
+
+            for i in range(len(sensors)):
+                if sensors[i] in display_sensors:
+                    keys.append(dictionary[sensors[i]] + suffix)
+                    if measurements.size == 0:
+                        measurements = measurement[:, i]
+                    else:
+                        measurements = np.vstack((measurements, measurement[:, i]))
 
         time = []
         starttime, endtime, step = result[0]
@@ -79,11 +90,10 @@ class RrdHandler:
             time.append(timeObj)
         data = []
         for i_key in range(len(keys)):
-            data.append({"legendName": keys[i_key], "data": list(measurements[:, i_key])})
+            data.append({"legendName": keys[i_key], "data": list(measurements[i_key, :])})
         return {"time": time, "data": data}
 
 def main():
-    r = redis.Redis()
     config = json.loads(r.get("temperature_config"))
     sensors = []
     for i_sensor in config["sensor"]:
@@ -105,8 +115,9 @@ def main():
                 for i_statistic in config["statistics"]:
                     period = i_statistic["period"]
                     type = i_statistic["type"]
+                    sensors = i_statistic["display"]
                     resolution = i_statistic["resolution"]
-                    statistics = (rrd.getData(period, resolution, type))
+                    statistics = (rrd.getData(period, resolution, type, sensors))
                     r.publish("temperature:statistics:{}".format(period), json.dumps(statistics))
                     r.set("temperature:statistics:{}".format(period), json.dumps(statistics))
         time.sleep(1)

@@ -66,8 +66,10 @@ def send_time():
 def send_temperature(message):
     message = json.loads(message['data'].decode('utf-8'))
     data = []
-    for field in message:
-        data.append({"name": field, "temperature": message[field]})
+    config = json.loads(r.get("temperature_config").decode('utf-8'))
+    dictionary = config["sensor_dictionary"]
+    for sensor in message:
+        data.append({"name": dictionary[sensor], "temperature": message[sensor]})
     socketio.emit('temperature', json.dumps(data))
 
 
@@ -103,12 +105,19 @@ def webcam():
 
 @socketio.on('connect')
 def connect():
+    # Send current temperature data
     message = r.get('temperature')
     message = json.loads(message.decode('utf-8'))
     data = []
-    for field in message:
-        data.append({"name": field, "temperature": message[field]})
-    socketio.emit('temperature', json.dumps(data))
+    config = json.loads(r.get("temperature_config").decode('utf-8'))
+    dictionary = config["sensor_dictionary"]
+    for sensor in message:
+        data.append({"name": dictionary[sensor], "temperature": message[sensor]})
+    socketio.emit('temperature', json.dumps(data), room=request.sid)
+
+    # Send current webcam data
+    socketio.emit('webcam',  r.get('snapshot').decode('utf-8'), room=request.sid)
+
     clients.append(request.sid)
     # logger.info('Client {} connected. Number of clients is {}.'.format(request.sid, len(clients)))
     global thread
