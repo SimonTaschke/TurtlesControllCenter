@@ -9,10 +9,10 @@ import os
 def webcam_provider():
     r = redis.Redis()
     config = json.loads(r.get("webcam_config"))
-    image_interval = config["image_interval"]
 
     while True:
         start_time = time.time()
+
         # Take image
         cap = cv2.VideoCapture(0)
         ret, frame = cap.read()
@@ -23,9 +23,16 @@ def webcam_provider():
         r.publish('snapshot', image_name)
         r.set('snapshot', image_name)
 
-        image_list = glob.glob("picture*.jpg")
+        # remove images older than storage time
+        image_list = glob.glob("./web/static/img/webcam/*.jpg")
         sorted_images = sorted(image_list, key=os.path.getmtime)
+        for image in sorted_images:
+            if os.stat(os.path.join(image)).st_mtime < time.time() - config["storage_time"]:
+                os.remove(image)
+            else:
+                break
 
-        pause_time = (start_time + image_interval) - time.time()
+        # Wait for next interval
+        pause_time = (start_time + config["image_interval"]) - time.time()
         if pause_time > 0:
             time.sleep(pause_time)
