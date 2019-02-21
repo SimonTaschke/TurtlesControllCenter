@@ -46,8 +46,6 @@ def rrdGetStatistics(sensor, period, resolution, type):
         timeObj["min"] = timeStamp.strftime('%M')
         timeObj["sec"] = timeStamp.strftime('%S')
         time.append(timeObj)
-    # time_info = result[0]
-    # time = list(np.arange(time_info[0], time_info[1], time_info[2]))
     data = [i[0] for i in result[2]]
     return time, data
 

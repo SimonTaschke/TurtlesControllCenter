@@ -4,7 +4,6 @@ import json
 from threading import Lock
 from flask import Flask, render_template, session, request, send_file
 from flask_socketio import SocketIO, emit, join_room, leave_room, rooms, close_room, disconnect
-import logging.handlers
 import redis
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
@@ -18,18 +17,6 @@ socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
 r = redis.Redis()
-
-# logger = logging.getLogger(__name__)
-# logger.setLevel(logging.INFO)
-# formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
-# fileHandler = logging.handlers.RotatingFileHandler('./log/webserver.log', mode='w', maxBytes=1 * 1e6)
-# fileHandler.setFormatter(formatter)
-# fileHandler.setLevel(logging.INFO)
-# consoleHandler = logging.StreamHandler()
-# consoleHandler.setFormatter(formatter)
-# consoleHandler.setLevel(logging.INFO)
-# logger.addHandler(fileHandler)
-# logger.addHandler(consoleHandler)
 
 
 def background_thread():
@@ -45,7 +32,6 @@ def background_thread():
         p.get_message()
         send_time()
         socketio.sleep(0.5)
-    # logger.info('Stop background thread')
     thread = None
 
 
@@ -116,7 +102,6 @@ def connect():
     socketio.emit('webcam',  r.get('snapshot').decode('utf-8'), room=request.sid)
 
     clients.append(request.sid)
-    # logger.info('Client {} connected. Number of clients is {}.'.format(request.sid, len(clients)))
     global thread
     with thread_lock:
         if thread is None:
@@ -126,7 +111,6 @@ def connect():
 @socketio.on('disconnect')
 def disconnect():
     clients.remove(request.sid)
-    # logger.info('Client {} disconnected. Number of clients is {}.'.format(request.sid, len(clients)))
 
 
 @socketio.on('subscribeStatistics')
@@ -136,14 +120,9 @@ def subscribeRoom(message):
         leave_room(i_statistic["period"])
     join_room(message["room"])
     data = r.get("temperature:statistics:{}".format(message["room"]))
-    # logger.info('Removed client {} from all rooms and added to room "{}".'.format(request.sid, message["room"]))
     socketio.emit('temperature_statistic', data.decode('utf-8'), room=request.sid)
 
 def startWebserver():
-    # logger.info('Starting webserver')
     global clients
     clients = []
-    # try:
     socketio.run(app, '0.0.0.0')
-    # except:
-    #     logger.fatal("Could not start socketio")

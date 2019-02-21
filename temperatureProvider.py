@@ -4,11 +4,11 @@ import json
 import time
 from sensor.ds20b18 import ds20b18
 
+r = redis.Redis()
+
 
 def get_temperature(sensors, virtual_sensor, emulate):
-    r = redis.Redis()
 
-    startTime = time.time()
     i = 0
     temperature = {}
 
@@ -33,7 +33,6 @@ def get_temperature(sensors, virtual_sensor, emulate):
 
 
 def main():
-    r = redis.Redis()
     config = json.loads(r.get("temperature_config"))
 
     while True:
