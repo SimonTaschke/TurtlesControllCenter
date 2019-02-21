@@ -66,10 +66,8 @@ def send_time():
 def send_temperature(message):
     message = json.loads(message['data'].decode('utf-8'))
     data = []
-    config = json.loads(r.get("temperature_config").decode('utf-8'))
-    dictionary = config["sensor_dictionary"]
     for sensor in message:
-        data.append({"name": dictionary[sensor], "temperature": message[sensor]})
+        data.append({"name": sensor, "temperature": message[sensor]})
     socketio.emit('temperature', json.dumps(data))
 
 
@@ -110,9 +108,8 @@ def connect():
     message = json.loads(message.decode('utf-8'))
     data = []
     config = json.loads(r.get("temperature_config").decode('utf-8'))
-    dictionary = config["sensor_dictionary"]
     for sensor in message:
-        data.append({"name": dictionary[sensor], "temperature": message[sensor]})
+        data.append({"name": sensor, "temperature": message[sensor]})
     socketio.emit('temperature', json.dumps(data), room=request.sid)
 
     # Send current webcam data

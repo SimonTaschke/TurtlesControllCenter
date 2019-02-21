@@ -11,13 +11,13 @@ r = redis.Redis()
 # temperature config
 filename = "temperature_config.json"
 config = json.loads(open(filename).read())
-# create sensor dictionary
-dictionary = {}
-for sensor in config["sensor"]:
-    dictionary[sensor["name"]] = sensor["display_name"]
-for sensor in config["virtual_sensor"]:
-    dictionary[sensor["name"]] = sensor["display_name"]
-config["sensor_dictionary"] = dictionary
+# # create sensor dictionary
+# dictionary = {}
+# for sensor in config["sensor"]:
+#     dictionary[sensor["name"]] = sensor["display_name"]
+# for sensor in config["virtual_sensor"]:
+#     dictionary[sensor["name"]] = sensor["display_name"]
+# config["sensor_dictionary"] = dictionary
 r.set("temperature_config", json.dumps(config))
 
 # webcam config

@@ -4,120 +4,102 @@ import json
 import os
 import rrdtool
 from datetime import datetime
-import numpy as np
-
-r = redis.Redis()
 
 
-class RrdHandler:
-    def __init__(self, filename, measurement_intervall, sensor_names, statistics):
-        self.filename = filename
-        self.sensor_names = sensor_names
+def rrdCreate(sensor, step, statistics):
+    fielname = sensor + ".rrd"
+    if os.path.isfile(fielname):
+        print('Database already exists. Do not overwrite.')
+    else:
+        statistic = ()
+        for json in statistics:
+            period = json["period"]
+            resolution = json["resolution"]
+            for type in json["type"]:
+                statistic += ("RRA:" + type + ":0.5:" + resolution + ":" + period,)
 
-        if os.path.isfile(self.filename):
-            print('Database already exists. Do not overwrite.')
-        else:
-            sensors = ()
-            for i_sensor in self.sensor_names:
-                print(i_sensor)
-                sensors += ("DS:" + i_sensor + ":GAUGE:" + str(2 * measurement_intervall) + ":U:U", )
+        rrdtool.create(fielname,
+            "--step", str(step),
+            "--no-overwrite",
+            "DS:" + sensor + ":GAUGE:" + str(2 * step) + ":U:U",
+            *statistic)
 
-            statistic = ()
-            for json in statistics:
-                period = json["period"]
-                resolution = json["resolution"]
-                for type in json["type"]:
-                    statistic += ("RRA:" + type + ":0.5:" + resolution + ":" + period, )
+def rrdUpate(sensor, time, value):
+    rrdtool.update("{}.rrd".format(sensor), "{}:{}".format(time, value))
 
-            rrdtool.create(
-                self.filename,
-                "--step", str(measurement_intervall),
-                "--no-overwrite",
-                *sensors,
-                *statistic)
+def rrdGetStatistics(sensor, period, resolution, type):
+    result = rrdtool.fetch("{}.rrd".format(sensor),
+                           type,
+                           "--align-start",
+                           "--resolution", resolution,
+                           "--start", "-" + period)
+    time = []
+    starttime, endtime, step = result[0]
+    nTimeStamps = int((endtime - starttime) / step)
+    for i_time in range(0, nTimeStamps):
+        timeStamp = datetime.fromtimestamp(starttime + (i_time * step))
+        timeObj = {}
+        timeObj["year"] = timeStamp.strftime('%Y')
+        timeObj["month"] = timeStamp.strftime('%m')
+        timeObj["day"] = timeStamp.strftime('%d')
+        timeObj["hour"] = timeStamp.strftime('%H')
+        timeObj["min"] = timeStamp.strftime('%M')
+        timeObj["sec"] = timeStamp.strftime('%S')
+        time.append(timeObj)
+    # time_info = result[0]
+    # time = list(np.arange(time_info[0], time_info[1], time_info[2]))
+    data = [i[0] for i in result[2]]
+    return time, data
 
-    def update(self, dict):
-        response = rrdtool.lastupdate(self.filename)
-        data_string = 'N'
-        for sensor in response["ds"]:
-            data_string = data_string + ":" + str(dict[sensor])
-        rrdtool.update(self.filename, data_string)
-
-    def getData(self, period, resolution, type, display_sensors):
-        keys = []
-        measurements = np.array([])
-        config = json.loads(r.get("temperature_config").decode('utf-8'))
-        dictionary = config["sensor_dictionary"]
-
-        for i_type in type:
-            # period        requested time interval as string, e.g. 1s
-            # resolution    data resolution as string, e.g 1s, 15m, 1d
-            result = rrdtool.fetch(self.filename,
-                                   i_type,
-                                   "--align-start",
-                                   "--resolution", resolution,
-                                   "--start", "-" + period)
-
-            if i_type == "AVERAGE":
-                suffix = ""
-            elif i_type == "MIN":
-                suffix = " min"
-            elif i_type == "MAX":
-                suffix = " max"
-            measurement = np.array(result[2])
-            sensors = result[1]
-
-            for i in range(len(sensors)):
-                if sensors[i] in display_sensors:
-                    keys.append(dictionary[sensors[i]] + suffix)
-                    if measurements.size == 0:
-                        measurements = measurement[:, i]
-                    else:
-                        measurements = np.vstack((measurements, measurement[:, i]))
-
-        time = []
-        starttime, endtime, step = result[0]
-        nTimeStamps = int((endtime - starttime) / step)
-        for i_time in range(0, nTimeStamps):
-            timeStamp = datetime.fromtimestamp(starttime + (i_time * step))
-            timeObj = {}
-            timeObj["year"] = timeStamp.strftime('%Y')
-            timeObj["month"] = timeStamp.strftime('%m')
-            timeObj["day"] = timeStamp.strftime('%d')
-            timeObj["hour"] = timeStamp.strftime('%H')
-            timeObj["min"] = timeStamp.strftime('%M')
-            timeObj["sec"] = timeStamp.strftime('%S')
-            time.append(timeObj)
-        data = []
-        for i_key in range(len(keys)):
-            data.append({"legendName": keys[i_key], "data": list(measurements[i_key, :])})
-        return {"time": time, "data": data}
 
 def main():
-    config = json.loads(r.get("temperature_config"))
-    sensors = []
-    for i_sensor in config["sensor"]:
-        sensors.append(i_sensor["name"])
-    for i_sensor in config["virtual_sensor"]:
-        sensors.append(i_sensor["name"])
+    # create cumulation type dictionary
+    type_dictionary = {}
+    type_dictionary["AVERAGE"] = ""
+    type_dictionary["MIN"] = " min"
+    type_dictionary["MAX"] = " max"
 
-    rrd = RrdHandler("test.rrd", 5, sensors, config["statistics"])
+    # connect to redis
+    r = redis.Redis()
+    config = json.loads(r.get("temperature_config"))
+
+    # create rrd database for each sensor
+    rrd_dictionary = {}
+    for sensor in config["sensor"]:
+        rrdCreate(sensor["rrdName"], 5, config["statistics"])
+        rrd_dictionary[sensor["name"]] = sensor["rrdName"]
+    for sensor in config["virtual_sensor"]:
+        rrdCreate(sensor["rrdName"], 5, config["statistics"])
+        rrd_dictionary[sensor["name"]] = sensor["rrdName"]
+
+    # subscribe temperature data
     p = r.pubsub()
     p.subscribe('temperature')
-
-    statistics_old = None
 
     while True:
         message = p.get_message()
         if message is not None:
             if message["type"] == "message":
-                rrd.update(json.loads(message["data"]))
-                for i_statistic in config["statistics"]:
-                    period = i_statistic["period"]
-                    type = i_statistic["type"]
-                    sensors = i_statistic["display"]
-                    resolution = i_statistic["resolution"]
-                    statistics = (rrd.getData(period, resolution, type, sensors))
-                    r.publish("temperature:statistics:{}".format(period), json.dumps(statistics))
-                    r.set("temperature:statistics:{}".format(period), json.dumps(statistics))
+
+                # Update database
+                time_now = time.time()
+                message = json.loads(message["data"])
+                for sensor in message:
+                    rrdUpate(rrd_dictionary[sensor], time_now, message[sensor])
+
+                # Get and pusblish statistics data
+                for statistic in config["statistics"]:
+                    period = statistic["period"]
+                    resolution = statistic["resolution"]
+                    stats = {}
+                    stats["data"] = []
+
+                    for sensor in statistic["sensor"]:
+                        for type in statistic["type"]:
+                            stats_time, data = rrdGetStatistics(rrd_dictionary[sensor], period, resolution, type)
+                            stats["time"] = stats_time
+                            stats["data"].append({"legendName": sensor + type_dictionary[type], "data": data})
+                    r.publish("temperature:statistics:{}".format(period), json.dumps(stats))
+                    r.set("temperature:statistics:{}".format(period), json.dumps(stats))
+
         time.sleep(1)

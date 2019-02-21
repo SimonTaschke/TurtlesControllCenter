@@ -2,20 +2,20 @@
   "measurement_intervall": 5,
   "emulate_sensors": true,
   "sensor": [
-    {"serial": "28-0417a31eccff", "name": "innen1", "display_name": "Innen (1)"},
-    {"serial": "28-0517a228efff", "name": "innen2", "display_name": "Innen (2)"},
-    {"serial": "28-0417a2ffe2ff", "name": "heatControl", "display_name": "Heizi"},
-    {"serial": "28-0417a2bf22ff", "name": "ausen1", "display_name": "Außen"}
+    {"serial": "28-0417a31eccff", "name": "Innen (1)", "rrdName":  "innen1"},
+    {"serial": "28-0517a228efff", "name": "Innen (2)", "rrdName":  "innen2"},
+    {"serial": "28-0417a2ffe2ff", "name": "Heizi", "rrdName":  "heatControl"},
+    {"serial": "28-0417a2bf22ff", "name": "Außen", "rrdName":  "ausen1"}
   ],
   "virtual_sensor": [
-    {"cummulate_sensors": ["innen1", "innen2"] ,"name": "innenMean", "display_name": "Innen"}
+    {"cummulate_sensors": ["Innen (1)", "Innen (2)"] ,"name": "Innen", "rrdName": "innenMean"}
   ],
   "statistics": [
-          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1y", "resolution": "3d", "display": ["innenMean", "ausen1"]},
-          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1M", "resolution": "1d", "display": ["innenMean", "ausen1"]},
-          {"type": ["AVERAGE"],               "period": "1w", "resolution": "1h", "display": ["innenMean", "ausen1"]},
-          {"type": ["AVERAGE"],               "period": "1d", "resolution": "10m", "display": ["innen1", "innen2", "heatcontrol", "innenMean", "ausen1"]},
-          {"type": ["AVERAGE"],               "period": "1h", "resolution": "1m", "display": ["innen1", "innen2", "heatcontrol", "innenMean", "ausen1"]},
-          {"type": ["AVERAGE"],               "period": "15m", "resolution": "5s", "display": ["innen1", "innen2", "heatcontrol", "innenMean", "ausen1"]}
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1y", "resolution": "3d", "sensor": ["Innen", "Außen"]},
+          {"type": ["AVERAGE", "MIN", "MAX"], "period": "1M", "resolution": "1d", "sensor": ["Innen", "Außen"]},
+          {"type": ["AVERAGE"],               "period": "1w", "resolution": "1h", "sensor": ["Innen", "Außen"]},
+          {"type": ["AVERAGE"],               "period": "1d", "resolution": "10m", "sensor": ["Innen (1)", "Innen (2)", "Heizi", "Innen", "Außen"]},
+          {"type": ["AVERAGE"],               "period": "1h", "resolution": "1m", "sensor": ["Innen (1)", "Innen (2)", "Heizi", "Innen", "Außen"]},
+          {"type": ["AVERAGE"],               "period": "15m", "resolution": "5s", "sensor": ["Innen (1)", "Innen (2)", "Heizi", "Innen", "Außen"]}
         ]
 }
