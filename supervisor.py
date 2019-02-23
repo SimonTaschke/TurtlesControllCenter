@@ -9,12 +9,12 @@ import json
 r = redis.Redis()
 
 # temperature config
-filename = "temperature_config.json"
+filename = "./config/temperature_config.json"
 config = json.loads(open(filename).read())
 r.set("temperature_config", json.dumps(config))
 
 # webcam config
-filename = "webcam_config.json"
+filename = "./config/webcam_config.json"
 config = open(filename).read()
 r.set("webcam_config", config)
 
