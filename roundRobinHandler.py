@@ -5,9 +5,10 @@ import os
 import rrdtool
 from datetime import datetime
 
+rrd_path = "rrd_database"
 
 def rrdCreate(sensor, step, statistics):
-    fielname = sensor + ".rrd"
+    fielname = os.path.join(rrd_path, sensor + ".rrd")
     if os.path.isfile(fielname):
         print('Database already exists. Do not overwrite.')
     else:
@@ -25,10 +26,10 @@ def rrdCreate(sensor, step, statistics):
             *statistic)
 
 def rrdUpate(sensor, time, value):
-    rrdtool.update("{}.rrd".format(sensor), "{}:{}".format(time, value))
+    rrdtool.update(os.path.join(rrd_path, "{}.rrd".format(sensor)), "{}:{}".format(time, value))
 
 def rrdGetStatistics(sensor, period, resolution, type):
-    result = rrdtool.fetch("{}.rrd".format(sensor),
+    result = rrdtool.fetch(os.path.join(rrd_path, "{}.rrd".format(sensor)),
                            type,
                            "--align-start",
                            "--resolution", resolution,
