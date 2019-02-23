@@ -555,7 +555,7 @@ if(false) {}
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/simon/turtles/web/turtle-app/src/styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! /home/simon/turtles/turtle-app/src/styles.css */"./src/styles.css");
 
 
 /***/ })

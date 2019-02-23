@@ -5498,8 +5498,8 @@ window.global = window; // for use with socket.io https://www.npmjs.com/package/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/simon/turtles/web/turtle-app/src/polyfills.ts */"./src/polyfills.ts");
-module.exports = __webpack_require__(/*! /home/simon/turtles/web/turtle-app/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/jit-polyfills.js */"./node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/jit-polyfills.js");
+__webpack_require__(/*! /home/simon/turtles/turtle-app/src/polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! /home/simon/turtles/turtle-app/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/jit-polyfills.js */"./node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/jit-polyfills.js");
 
 
 /***/ })
